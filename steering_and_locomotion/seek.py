@@ -10,17 +10,15 @@ from vehicle import Vehicle
 class SeekWidget(Widget):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.seeker = Vehicle()
         self.target = Vector(400, 100)
+        self.seeker = Vehicle(self.target)
+        self.seeker.target = self.target
+        self.canvas.add(Ellipse(pos=(self.target), size=(10, 10)))
 
     def on_touch_down(self, touch):
         self.canvas.add(Rectangle(size=(50, 50)))
 
     def update(self, dt):
-        self.canvas.add(Ellipse(pos=(self.target), size=(10, 10)))
-        desired = (self.target - self.seeker.location).normalize() * self.seeker.max_speed
-        steer = desired - self.seeker.velocity
-        self.seeker.acceleration += steer
         self.seeker.update(dt)
         self.seeker.render(self.canvas)
 
