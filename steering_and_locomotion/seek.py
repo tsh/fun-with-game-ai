@@ -1,13 +1,12 @@
-from kivy.app import App
-from kivy.clock import Clock
-from kivy.uix.widget import Widget
-from kivy.graphics import Color, Ellipse, Rectangle
-from kivy.vector import Vector
+import sys
+import pygame
+from pygame import Rect, display
+from pygame.locals import QUIT
 
 from vehicle import Vehicle
 
 
-class SeekWidget(Widget):
+class SeekWidget():
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.target = Vector(400, 100)
@@ -23,7 +22,7 @@ class SeekWidget(Widget):
         self.seeker.render(self.canvas)
 
 
-class MyPaintApp(App):
+class MyPaintApp():
 
     def build(self):
         game = SeekWidget()
@@ -32,4 +31,20 @@ class MyPaintApp(App):
 
 
 if __name__ == '__main__':
-    MyPaintApp().run()
+    pygame.init()
+
+    #Set up the window
+    windowSurface = pygame.display.set_mode((620, 480), 0, 32)
+    pygame.display.set_caption('Steering and locomotion')
+
+    vh = Vehicle()
+
+    clock = pygame.time.Clock()
+    while True:
+        clock.tick(60)
+        vh.render(windowSurface)
+        display.flip()
+
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                sys.exit()
