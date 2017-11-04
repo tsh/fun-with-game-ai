@@ -19,6 +19,16 @@ class MovingEntity(BaseEntity):
         self.max_speed = 2
         self.max_force = 0.1
 
+    def seek(self, target):
+        target_loc = target.location
+        desired_velocity = (target_loc - self.location).normalize() * self.max_speed
+        steer = desired_velocity - self.velocity
+        self.location += steer
+
+    def simple_seek(self, target):
+        target_loc = target.location
+        self.location += (target_loc - self.location).normalize()
+
 
 class Vehicle(MovingEntity):
     def __init__(self, *args, **kwargs):
@@ -29,13 +39,3 @@ class Vehicle(MovingEntity):
         # self.velocity += self.acceleration
         # self.location += self.velocity * dt
         pass
-
-    def seek(self, target):
-        target_loc = target.location
-        desired_velocity = (target_loc - self.location).normalize() * self.max_speed
-        steer = desired_velocity - self.velocity
-        self.location += steer
-
-    def simple_seek(self, target):
-        target_loc = target.location
-        self.location += (target_loc - self.location).normalize()
