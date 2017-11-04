@@ -3,13 +3,12 @@ from pygame import Rect, draw
 from pygame.locals import Color
 
 class Vehicle():
-    def __init__(self):
-        self.location = Vector2(5, 15)
-        self.velocity = Vector2(0, 0)
+    def __init__(self, location):
+        self.location = location
+        self.velocity = Vector2(1, 1)
         self.acceleration = Vector2(0, 0)
-        self.max_speed = 10
+        self.max_speed = 2
         self.max_force = 0.1
-
 
     def update(self, dt):
         # self.seek(self.target)
@@ -18,10 +17,14 @@ class Vehicle():
         pass
 
     def render(self, surface):
-        # canvas.add(Rect(pos=self.location, size=(50, 50)))
-        draw.circle(surface, Color("green"), (10,10), 50)
+        draw.circle(surface, Color("green"), (int(self.location.x), int(self.location.y)), 10)
 
     def seek(self, target):
-        desired = (target - self.location).normalize() * self.max_speed
-        steer = desired - self.velocity
-        self.acceleration += steer
+        target_loc = target.location
+        desired_velocity = (target_loc - self.location).normalize() * self.max_speed
+        steer = desired_velocity - self.velocity
+        self.location += steer
+
+    def simple_seek(self, target):
+        target_loc = target.location
+        self.location += (target_loc - self.location).normalize()
