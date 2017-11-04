@@ -29,6 +29,12 @@ class MovingEntity(BaseEntity):
         target_loc = target.location
         self.location += (target_loc - self.location).normalize()
 
+    def flee(self, target):
+        target_pos = target.location
+        desired_velocity = (self.location - target_pos).normalize() * self.max_speed
+        steer = desired_velocity - self.velocity
+        self.location += steer
+
 
 class Vehicle(MovingEntity):
     def __init__(self, *args, **kwargs):

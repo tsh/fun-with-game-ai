@@ -16,6 +16,7 @@ if __name__ == '__main__':
 
     dummy_vehicle = Vehicle(Vector2(450, 50))
     vehicle = Vehicle(Vector2(50, 50))
+    flee = Vehicle(Vector2(275, 275))
     target = Vehicle(Vector2(300, 200))
 
     clock = pygame.time.Clock()
@@ -24,7 +25,9 @@ if __name__ == '__main__':
         dummy_vehicle.render(windowSurface)
         vehicle.render(windowSurface)
         target.render(windowSurface)
+        flee.render(windowSurface)
         vehicle.seek(target)
+        flee.flee(target)
         dummy_vehicle.simple_seek(target)
 
         display.update()
