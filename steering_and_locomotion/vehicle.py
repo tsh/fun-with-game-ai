@@ -29,11 +29,10 @@ class MovingEntity(BaseEntity):
     def simple_seek(self):
         return (self.target_pos - self.location).normalize()
 
-    def seek(self, target):
-        target_loc = target.location
-        desired_velocity = (target_loc - self.location).normalize() * self.max_speed
+    def seek(self):
+        desired_velocity = (self.target_pos - self.location).normalize() * self.max_speed
         steer = desired_velocity - self.velocity
-        self.location += steer
+        return steer
 
     def flee(self):
         desired_velocity = (self.location - self.target_pos).normalize() * self.max_speed
@@ -51,6 +50,12 @@ class SimpleSeekVehicle(MovingEntity):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.action = self.simple_seek
+
+
+class SeekVehicle(MovingEntity):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.action = self.seek
 
 
 class FleeVehicle(MovingEntity):

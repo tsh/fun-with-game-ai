@@ -1,38 +1,11 @@
-import sys
-import pygame
 from pygame.math import Vector2
-from pygame import Rect, display
-from pygame.locals import QUIT, Color
-
-from vehicle import Vehicle
-
+from game import Game
+from vehicle import SeekVehicle, BaseEntity
 
 if __name__ == '__main__':
-    pygame.init()
-
-    #Set up the window
-    windowSurface = pygame.display.set_mode((620, 480), 0, 32)
-    pygame.display.set_caption('Steering and locomotion')
-
-    dummy_vehicle = Vehicle(Vector2(450, 50))
-    vehicle = Vehicle(Vector2(50, 50))
-    flee = Vehicle(Vector2(275, 275))
-    target = Vehicle(Vector2(300, 200))
-
-    clock = pygame.time.Clock()
-    while True:
-        clock.tick(60)
-        dummy_vehicle.render(windowSurface)
-        vehicle.render(windowSurface)
-        target.render(windowSurface)
-        flee.render(windowSurface)
-        vehicle.seek(target)
-        flee.flee(target)
-        dummy_vehicle.simple_seek(target)
-
-        display.update()
-        windowSurface.fill(Color('black'))
-
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                sys.exit()
+    g = Game('Simple seek')
+    sv = SeekVehicle(location=Vector2(20, 0))
+    target = BaseEntity(Vector2(400, 400))
+    sv.set_target(target)
+    g.game_objects.extend([sv, target])
+    g.run()
