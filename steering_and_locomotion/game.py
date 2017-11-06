@@ -4,8 +4,6 @@ from pygame.math import Vector2
 from pygame import Rect, display
 from pygame.locals import QUIT, Color
 
-from vehicle import Vehicle
-
 
 class Game(object):
     def __init__(self, title):
@@ -19,7 +17,7 @@ class Game(object):
         while True:
             dt = clock.tick(60)
             for gobj in self.game_objects:
-                gobj.update(dt)
+                gobj.update()
                 gobj.render(self.canvas)
 
             display.update()
