@@ -15,8 +15,8 @@ class BaseEntity(object):
 
 
 class MovingEntity(BaseEntity):
-    def __init__(self, velocity=Vector2(0, 0), *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, location, velocity=Vector2(0, 0), *args, **kwargs):
+        super().__init__(location, *args, **kwargs)
         self.velocity = velocity
         self.acceleration = Vector2(0, 0)
         self.max_speed = 2
