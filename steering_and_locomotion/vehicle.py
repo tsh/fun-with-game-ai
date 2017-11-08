@@ -1,3 +1,4 @@
+import random
 from pygame.math import Vector2
 from pygame import Rect, draw
 from pygame.locals import Color
@@ -22,6 +23,13 @@ class MovingEntity(BaseEntity):
         self.max_speed = 2
         self.max_force = 0.1
         self.target_pos = None
+        # radius of the constraining circle
+        self.wander_radius = 0
+        # distance the wander circle is projected in front of the agent
+        self.wander_distance = 0
+        # maximum amount of random displacement that can be added to the target
+        self.wander_jitter = 1
+        self.wander_target = Vector2(100, 100)
 
     def set_target(self, target):
         self.target_pos = target.location
@@ -38,6 +46,14 @@ class MovingEntity(BaseEntity):
         desired_velocity = (self.location - self.target_pos).normalize() * self.max_speed
         steer = desired_velocity - self.velocity
         return steer
+
+    def wander(self):
+        # TODO: fix me
+        self.wander_target += Vector2(random.uniform(-1, 1), random.uniform(-1, 1))
+        self.wander_target.normalize_ip()
+        print (self.wander_target)
+        self.wander_target *= self.wander_radius
+        return Vector2(0,0)
 
     def update(self, dt=None):
         # self.seek(self.target)
@@ -62,3 +78,8 @@ class FleeVehicle(MovingEntity):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.action = self.flee
+
+class WanderVehicle(MovingEntity):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.action = self.wander
